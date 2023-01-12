@@ -15,18 +15,19 @@ import axios from 'axios';
 
 const theme = createTheme();
 
-function Scrape() {
+function AddRecipe() {
 	const [recipe, setRecipe] = React.useState([]);
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		const url = event.currentTarget.url.value;
+		const url: string = event.currentTarget.url.value;
+		const title: string = event.currentTarget.title.value;
 
-		const reqBody = { url: url };
+		const reqBody = { url: url, title: title };
 
 		axios
-			.post('/api/scrape/bbcgoodfood', { url: url })
+			.post('/api/scrape/bbcgoodfood', reqBody)
 			.then(function (response) {
 				console.log(response);
 			})
@@ -60,7 +61,7 @@ function Scrape() {
 						onSubmit={handleSubmit}
 						noValidate
 						sx={{ mt: 1 }}>
-						<Stack direction='row'>
+						<Stack direction='column'>
 							<TextField
 								margin='normal'
 								type='url'
@@ -71,6 +72,16 @@ function Scrape() {
 								placeholder='https://www.bbcgoodfood.com/recipes/...'
 								name='url'
 								autoComplete='url'
+								autoFocus
+							/>
+							<TextField
+								margin='normal'
+								required
+								fullWidth
+								id='title'
+								label='title'
+								placeholder='Name of your recipe'
+								name='title'
 								autoFocus
 							/>
 
@@ -86,4 +97,4 @@ function Scrape() {
 	);
 }
 
-export default Scrape;
+export default AddRecipe;
